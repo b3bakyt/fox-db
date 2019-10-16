@@ -2,7 +2,7 @@
   "name": "fox-db",
   "version": "1.0.0",
   "dependencies": {
-    "immunitet.js": "^2.0.0",
+    "immunitet.js": "^2.0.1",
     "pg": "^7.12.1"
   },
   "devDependencies": {

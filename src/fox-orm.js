@@ -105,9 +105,7 @@ function getForeignKey(tableName, fKey, pKey) {
     if (fKey)
         return fKey;
 
-    const foreignKey = singularize(tableName) + '_'+ pKey;
-    console.log('foreignKey:', foreignKey);
-    return foreignKey;
+    return singularize(tableName) + '_' + pKey;
 }
 
 function buildHasOneRelation(modelConfig, { target, foreignKey }) {
@@ -128,11 +126,6 @@ const Orm = {
     BOOLEAN: 'BOOLEAN',
 
     createModel(fieldsConfig, modelConfigs) {
-        let validationRules = Object.keys(fieldsConfig)
-            .map(key => `(${key})${fieldsConfig[key]}`);
-
-        validationRules = `object:${validationRules.join('||')}`;
-
         const sourceTableShort = modelConfigs.sourceTableShort || (modelConfigs.hasOne && modelConfigs.hasOne.target && 's') || '';
         const targetTableShort = modelConfigs.targetTableShort || (modelConfigs.hasOne && modelConfigs.hasOne.target && 't') || '';
 
@@ -293,9 +286,10 @@ const Orm = {
                     return Promise.all(resultPromises);
                 }
 
-                const validate = validateValue(validationRules);
+                const validate = validateValue(fieldsConfig);
                 const [data, error] = validate(fields);
-                if (error) return Promise.reject(error);
+                if (error)
+                    return Promise.reject(error.message);
 
                 const fieldsValues = Object.values(data);
                 const fieldsKeys = Object.keys(data);

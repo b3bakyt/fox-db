@@ -8,7 +8,7 @@ const {
 } = Chai;
 
 const City = Orm.createModel({
-    // id: 'empty|number',
+    id: 'empty|number',
     title: 'string|maxLength:100',
     country_id: 'numeric|maximum:1000',
     status: 'default:1|enum:-1,0,1',
@@ -25,6 +25,7 @@ describe('Record creation', () => {
                 done();
             })
             .catch((error) => {
+                console.log('error:', error);
                 expect(error).equal(null);
                 done();
             });
@@ -263,7 +264,6 @@ describe('hasOne relation tests', () => {
     });
 
     const User = Orm.createModel({
-        // id: 'empty|number',
         code: 'string|maximum:3',
         status: 'default:1|enum:-1,0,1',
     }, {
@@ -275,7 +275,6 @@ describe('hasOne relation tests', () => {
     });
 
     const User2 = Orm.createModel({
-        // id: 'empty|number',
         code: 'string|maximum:3',
         status: 'default:1|enum:-1,0,1',
     }, {
