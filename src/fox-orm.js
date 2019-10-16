@@ -1,8 +1,8 @@
 const { Client }        = require('pg');
 const { types }         = require('pg');
 const { validateValue } = require('immunitet.js');
-const logger            = require('../services/logger');
 const { isEmpty }       = require('./lib/fox');
+const { singularize }   = require('./lib/inflector');
 
 const DB_PORT = '5432';
 const DB_USER = 'postgres';
@@ -47,10 +47,10 @@ const client = new Client(dbConfigs);
 
 client.connect()
     .then((result) => {
-        logger.info('Ready for query: ', result);
+        console.log('Ready for query: ', result);
     })
     .catch((error) => {
-        logger.error('Error: ', error);
+        console.error('Error: ', error);
     });
 
 function getKeyIds(length) {
@@ -101,9 +101,13 @@ function extractResult(result, resultType) {
     throw new Error('Undefined result type!');
 }
 
-function getForeignKey(tableName, fKey, target) {
+function getForeignKey(tableName, fKey, pKey) {
     if (fKey)
         return fKey;
+
+    const foreignKey = singularize(tableName) + '_'+ pKey;
+    console.log('foreignKey:', foreignKey);
+    return foreignKey;
 }
 
 function buildHasOneRelation(modelConfig, { target, foreignKey }) {
@@ -113,7 +117,7 @@ function buildHasOneRelation(modelConfig, { target, foreignKey }) {
     const sourceTable = modelConfig.modelName;
     const sourceKey   = modelConfig.primaryKey;
     const targetTable = target.modelConfig.modelName;
-    const targetKey   = getForeignKey(modelConfig.modelName, foreignKey, target);
+    const targetKey   = getForeignKey(modelConfig.modelName, foreignKey, modelConfig.primaryKey);
 
     return ` FROM ${sourceTable} s LEFT JOIN ${targetTable} t ON s.${sourceKey} = t.${targetKey}`;
 }

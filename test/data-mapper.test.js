@@ -21,11 +21,11 @@ describe('Record creation', () => {
         City
             .create({ title: 'Test-Tokyo', country_id: 1, status: 1 })
             .then((city) => {
-                expect(city.title).toEqual('Test-Tokyo');
+                expect(city.title).equal('Test-Tokyo');
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -34,11 +34,11 @@ describe('Record creation', () => {
         City
             .create({ title: '', country_id: 1, status: 1 })
             .then((city) => {
-                expect(city).toEqual(null);
+                expect(city).equal(null);
                 done();
             })
             .catch((error) => {
-                expect(error).toNotEqual(null);
+                expect(error).not.equal(null);
                 done();
             });
     });
@@ -50,12 +50,12 @@ describe('Record creation', () => {
                 { title: 'San-Hose', country_id: 1, status: 1 },
             ])
             .then((city) => {
-                expect(city[0].title).toEqual('New-York');
-                expect(city[1].title).toEqual('San-Hose');
+                expect(city[0].title).equal('New-York');
+                expect(city[1].title).equal('San-Hose');
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -68,11 +68,11 @@ describe('Function update', () => {
             .where({ title: 'San-Hose' })
             .run()
             .then((city) => {
-                expect(city.title).toEqual('Gordon');
+                expect(city.title).equal('Gordon');
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -86,11 +86,11 @@ describe('Function delete', () => {
             .limit(1)
             .run()
             .then((rowsCount) => {
-                expect(rowsCount).toEqual(1);
+                expect(rowsCount).equal(1);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -101,11 +101,11 @@ describe('Function findById', () => {
         City
             .findById(1)
             .then((city) => {
-                expect(city.title).toEqual('Абакан');
+                expect(city.title).equal('Абакан');
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -116,11 +116,11 @@ describe('Function findOne', () => {
         City
             .findOne({ title: 'Абакан' })
             .then((city) => {
-                expect(city.id).toEqual(1);
+                expect(city.id).equal(1);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -133,13 +133,13 @@ describe('Function select', () => {
             .where({ title: 'Абакан' })
             .run()
             .then((cities) => {
-                expect(cities[0].id).toEqual(1);
-                expect(cities[0].title).toEqual('Абакан');
-                expect(cities[0].status).toEqual(undefined);
+                expect(cities[0].id).equal(1);
+                expect(cities[0].title).equal('Абакан');
+                expect(cities[0].status).equal(undefined);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -151,12 +151,12 @@ describe('Function select', () => {
             .where({ status: 1 })
             .run()
             .then((cities) => {
-                expect(cities[0].title).toEqual('Абакан');
-                expect(cities[0].status).toEqual(1);
+                expect(cities[0].title).equal('Абакан');
+                expect(cities[0].status).equal(1);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -170,11 +170,11 @@ describe('Function limit', () => {
             .limit(1)
             .run()
             .then((cities) => {
-                expect(cities.title).toEqual('Абакан');
+                expect(cities.title).equal('Абакан');
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -186,11 +186,11 @@ describe('Function limit', () => {
             .limit(3)
             .run()
             .then((cities) => {
-                expect(cities.length).toEqual(3);
+                expect(cities.length).equal(3);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -205,11 +205,11 @@ describe('Function orderBy', () => {
             .limit(3)
             .run()
             .then((cities) => {
-                expect(cities[0].id).toBeLessThan(cities[1].id);
+                expect(cities[0].id).below(cities[1].id);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -222,11 +222,11 @@ describe('Function orderBy', () => {
             .limit(3)
             .run()
             .then((cities) => {
-                expect(cities[0].id).toBeGreaterThan(cities[1].id);
+                expect(cities[0].id).above(cities[1].id);
                 done();
             })
             .catch((error) => {
-                expect(error).toEqual(null);
+                expect(error).equal(null);
                 done();
             });
     });
@@ -243,7 +243,7 @@ describe('Function orderBy', () => {
                 done();
             })
             .catch((error) => {
-                expect(error).not.toEqual(null);
+                expect(error).not.equal(null);
                 done();
             });
     });
@@ -274,16 +274,41 @@ describe('hasOne relation tests', () => {
         }
     });
 
+    const User2 = Orm.createModel({
+        // id: 'empty|number',
+        code: 'string|maximum:3',
+        status: 'default:1|enum:-1,0,1',
+    }, {
+        modelName: 'users',
+        hasOne: {
+            target: Session,
+        }
+    });
+
     it('The hasOne relation should automagically return a record from related table', (done) => {
         User
             .findById(7)
             .then((user) => {
-                expect(user.token).toBeTruthy();
+                expect(user.token).to.be.ok;
                 done();
             })
             .catch((error) => {
                 console.log('error:', error);
-                expect(error).toEqual(null);
+                expect(error).equal(null);
+                done();
+            });
+    });
+
+    it('The hasOne relation should build foreign key name automagically', (done) => {
+        User2
+            .findById(7)
+            .then((user) => {
+                expect(user.token).to.be.ok;
+                done();
+            })
+            .catch((error) => {
+                console.log('error:', error);
+                expect(error).equal(null);
                 done();
             });
     });
