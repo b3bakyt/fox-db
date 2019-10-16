@@ -7,14 +7,6 @@ const {
     should,
 } = Chai;
 
-const City = Orm.createModel({
-    id: 'empty|number',
-    title: 'string|maxLength:100',
-    country_id: 'numeric|maximum:1000',
-    status: 'default:1|enum:-1,0,1',
-}, {
-    modelName: 'cities',
-});
 
 describe('hasOne relation tests', () => {
 
