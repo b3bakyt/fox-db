@@ -1,8 +1,8 @@
 const { Client }        = require('pg');
 const { types }         = require('pg');
 const { validateValue } = require('immunitet.js');
-const { isEmpty }       = require('./lib/fox');
-const { singularize }   = require('./lib/inflector');
+const { isEmpty }       = require('./lib/functional-utils');
+const { singularize }   = require('./lib/fox-inflector');
 
 const DB_PORT = '5432';
 const DB_USER = 'postgres';
